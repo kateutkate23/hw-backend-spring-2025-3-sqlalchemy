@@ -12,6 +12,8 @@ if TYPE_CHECKING:
 
 class AdminAccessor(BaseAccessor):
     async def connect(self, app: "Application") -> None:
+        await super().connect(app)
+
         admin_config = app.config.admin
         email = admin_config.email
         password = admin_config.password
@@ -24,10 +26,6 @@ class AdminAccessor(BaseAccessor):
             return await session.scalar(select(AdminModel).where(AdminModel.email == email))
 
     async def create_admin(self, email: str, password: str) -> AdminModel:
-        admin = await self.get_by_email(email)
-        if admin:
-            return admin
-
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
         admin = AdminModel(email=email, password=hashed_password)
 

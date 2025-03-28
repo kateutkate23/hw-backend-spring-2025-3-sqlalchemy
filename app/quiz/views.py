@@ -8,29 +8,30 @@ from app.quiz.schemes import (
     ThemeSchema,
 )
 from app.web.app import View
+from app.web.mixins import AuthRequiredMixin
 
 
-class ThemeAddView(View):
+class ThemeAddView(AuthRequiredMixin, View):
     @request_schema(ThemeSchema)
     @response_schema(ThemeSchema)
     async def post(self):
         raise NotImplementedError
 
 
-class ThemeListView(View):
+class ThemeListView(AuthRequiredMixin, View):
     @response_schema(ThemeListSchema)
     async def get(self):
         raise NotImplementedError
 
 
-class QuestionAddView(View):
+class QuestionAddView(AuthRequiredMixin, View):
     @request_schema(QuestionSchema)
     @response_schema(QuestionSchema)
     async def post(self):
         raise NotImplementedError
 
 
-class QuestionListView(View):
+class QuestionListView(AuthRequiredMixin, View):
     @querystring_schema(ThemeIdSchema)
     @response_schema(ListQuestionSchema)
     async def get(self):
