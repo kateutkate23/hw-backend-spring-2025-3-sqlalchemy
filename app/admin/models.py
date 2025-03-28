@@ -10,4 +10,4 @@ class AdminModel(BaseModel):
     __tablename__ = "admins"
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(128), unique=True)
-    password_hash: Mapped[Optional[str]] = mapped_column(String(128))
+    password: Mapped[Optional[str]] = mapped_column(String(128))
