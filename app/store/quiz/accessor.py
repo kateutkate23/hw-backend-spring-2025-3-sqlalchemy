@@ -52,5 +52,8 @@ class QuizAccessor(BaseAccessor):
             self, theme_id: int | None = None
     ) -> Sequence[QuestionModel]:
         async with self.app.database.session() as session:
-            result = await session.execute(select(QuestionModel))
+            query = select(QuestionModel)
+            if theme_id is not None:
+                query = query.where(QuestionModel.theme_id == theme_id)
+            result = await session.execute(query)
             return result.scalars().all()
