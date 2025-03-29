@@ -38,6 +38,7 @@ class Database:
         )
         self.session = async_sessionmaker(
             bind=self.engine,
+            expire_on_commit=False
         )
 
     async def disconnect(self, *args: Any, **kwargs: Any) -> None:
