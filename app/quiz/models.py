@@ -17,6 +17,7 @@ class AnswerModel(BaseModel):
     title: Mapped[str] = mapped_column(String(128))
     is_correct: Mapped[bool] = mapped_column(Boolean)
     question_id: Mapped[int] = mapped_column(ForeignKey("questions.id", ondelete="CASCADE"))
+    question: Mapped["QuestionModel"] = relationship(back_populates="answers")
 
 
 class QuestionModel(BaseModel):
@@ -25,4 +26,4 @@ class QuestionModel(BaseModel):
     title: Mapped[str] = mapped_column(String(128), unique=True)
     theme_id: Mapped[int] = mapped_column(ForeignKey("themes.id", ondelete="CASCADE"))
     theme: Mapped["ThemeModel"] = relationship(back_populates="questions")
-    answers: Mapped[list["AnswerModel"]] = relationship(cascade="all, delete-orphan")
+    answers: Mapped[list["AnswerModel"]] = relationship(back_populates="question", cascade="all, delete-orphan")

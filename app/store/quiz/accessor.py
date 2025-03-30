@@ -1,6 +1,7 @@
 from collections.abc import Iterable, Sequence
 
 from sqlalchemy import select
+from sqlalchemy.orm import joinedload
 
 from app.base.base_accessor import BaseAccessor
 from app.quiz.models import (
@@ -52,8 +53,8 @@ class QuizAccessor(BaseAccessor):
             self, theme_id: int | None = None
     ) -> Sequence[QuestionModel]:
         async with self.app.database.session() as session:
-            query = select(QuestionModel)
+            query = select(QuestionModel).options(joinedload(QuestionModel.answers))
             if theme_id is not None:
                 query = query.where(QuestionModel.theme_id == theme_id)
             result = await session.execute(query)
-            return result.scalars().all()
+            return result.scalars().unique().all()
